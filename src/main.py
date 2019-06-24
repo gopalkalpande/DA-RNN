@@ -24,7 +24,7 @@ from model import *
 parser = argparse.ArgumentParser(description="DA-RNN")
 
 # Dataset setting
-parser.add_argument('--dataroot', type=str, default="../nasdaq/nasdaq100_padding.csv", help='path to dataset')
+parser.add_argument('--dataroot', type=str, default="/nasdaq/nasdaq100_padding.csv", help='path to dataset')
 parser.add_argument('--workers', type=int, default=2, help='number of data loading workers [2]')
 parser.add_argument('--batchsize', type=int, default=128, help='input batch size [128]')
 
