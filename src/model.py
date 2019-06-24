@@ -142,7 +142,7 @@ class Decoder(nn.Module):
                            X_encoed), dim=2)
 
             beta = F.softmax(self.attn_layer(
-                x.view(dim = X, 2 * self.decoder_num_hidden + self.encoder_num_hidden)).view(dim = X, self.T - 1))
+                x.view(1, 2 * self.decoder_num_hidden + self.encoder_num_hidden)).view(dim = X, self.T - 1))
             # Eqn. 14: compute context vector
             # batch_size * encoder_hidden_size
             context = torch.bmm(beta.unsqueeze(1), X_encoed)[:, 0, :]
