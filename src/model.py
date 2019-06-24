@@ -16,7 +16,7 @@ import numpy as np
 from torch import nn
 from torch import optim
 import torch.nn.functional as F
-
+import math
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -77,7 +77,7 @@ class Encoder(nn.Module):
                 x.view(-1, self.encoder_num_hidden * 2 + self.T - 1))
 
             # get weights by softmax
-            alpha = F.softmax(x.view(-1, self.input_size))
+            alpha = F.softmax(x.view(dim = X, self.input_size))
 
             # get new input for LSTM
             x_tilde = torch.mul(alpha, X[:, t, :])
@@ -142,7 +142,7 @@ class Decoder(nn.Module):
                            X_encoed), dim=2)
 
             beta = F.softmax(self.attn_layer(
-                x.view(-1, 2 * self.decoder_num_hidden + self.encoder_num_hidden)).view(-1, self.T - 1))
+                x.view(dim = X, 2 * self.decoder_num_hidden + self.encoder_num_hidden)).view(dim = X, self.T - 1))
             # Eqn. 14: compute context vector
             # batch_size * encoder_hidden_size
             context = torch.bmm(beta.unsqueeze(1), X_encoed)[:, 0, :]
@@ -258,7 +258,7 @@ class DA_rnn(nn.Module):
                     y_prev[bs, :] = self.y[indices[bs]:(indices[bs] + self.T - 1)]
 
                 loss = self.train_forward(x, y_prev, y_gt)
-                self.iter_losses[epoch * iter_per_epoch + idx / self.batch_size] = loss
+                self.iter_losses[math.floor(epoch * iter_per_epoch + idx / self.batch_size)] = loss
 
                 idx += self.batch_size
                 n_iter += 1
