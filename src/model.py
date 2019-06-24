@@ -77,7 +77,7 @@ class Encoder(nn.Module):
                 x.view(-1, self.encoder_num_hidden * 2 + self.T - 1))
 
             # get weights by softmax
-            alpha = F.softmax(x.view(dim = 1, self.input_size))
+            alpha = F.softmax(x.view(1, self.input_size))
 
             # get new input for LSTM
             x_tilde = torch.mul(alpha, X[:, t, :])
